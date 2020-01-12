@@ -22,7 +22,7 @@ var adapter = soef.Adapter (
     onStateChange,
     onMessage,
     onUnload,
-    { name: 'wifilight-community' }
+    { name: 'wifilight' }
 );
 
 function fromDeviceName(name) {
@@ -84,14 +84,14 @@ function onUnload(callback) {
 var cmds = require(__dirname + '/devices');
 
 var usedStateNames = {
-    online:      { n: 'reachable', g:1, val: 0,     common: { write: false, min: false, max: true, role: "indicator.working"}},
-    on:          { n: 'on',        g:3, val: false, common: { min: false, max: true, role: "switch" }},
-    bri:         { n: 'bri',       g:3, val: 100,   common: { min: 0, max: 100, unit: '%', desc: '0..100%', role: "level.dimmer" }},
-    ct:          { n: 'ct',        g:1, val: 0,     common: { min: 0, max: 5000, unit: '°K', desc: 'temperature in °Kelvin 0..5000', role: "level.color.temperature" }},
-    red:         { n: 'r',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)', role: "level.color.red" }},
-    green:       { n: 'g',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)', role: "level.color.green" }},
-    blue:        { n: 'b',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)', role: "level.color.blue" }},
-    white:       { n: 'w',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)', role: "level.color.white" }},
+    online:      { n: 'reachable', g:1, val: 0,     common: { write: false, min: false, max: true }},
+    on:          { n: 'on',        g:3, val: false, common: { min: false, max: true }},
+    bri:         { n: 'bri',       g:3, val: 100,   common: { min: 0, max: 100, unit: '%', desc: '0..100%' }},
+    ct:          { n: 'ct',        g:1, val: 0,     common: { min: 0, max: 5000, unit: '°K', desc: 'temperature in °Kelvin 0..5000' }},
+    red:         { n: 'r',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)' }},
+    green:       { n: 'g',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)' }},
+    blue:        { n: 'b',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)' }},
+    white:       { n: 'w',         g:3, val: 0,     common: { min: 0, max: 255, desc: '0..255 or #rrggbb[ww] (hex)' }},
     disco:       { n: 'disco',     g:2, val: 1,     common: { min: 1, max: 9, desc: '1..9' }},
     progNo:      { n: 'progNo',    g:1, val: 38,    common: { min: 35, max: 56, desc: '37..56, 97=none' }},
     progOn:      { n: 'progOn',    g:1, val: false, common: { min: false, max: true, desc: 'program on/off' }},
@@ -99,7 +99,7 @@ var usedStateNames = {
     refresh:     { n: 'refresh',   g:1, val: false, common: { min: false, max: true, desc: 'read states from device' }},
     transition:  { n: 'trans',     g:1, val: 30,    common: { unit: '\u2152 s', desc: 'in 10th seconds'} },
     command:     { n: 'command',   g:3, val: 'r:0, g:0, b:0, on:true, transition:30', desc: 'r:0, g:0, b:0, on:true, transition:2' },
-    rgb:         { n: 'rgb',       g:3, val: '',    common: { desc: '000000..ffffff' }, role: "level.color.rgb"},
+    rgb:         { n: 'rgb',       g:3, val: '',    common: { desc: '000000..ffffff' }},
     onTime:      { n: 'onTime',    g:3, val: '',    common: {}}
 };
 
@@ -715,6 +715,23 @@ WifiLight.prototype.onData = function (data) {
 
     this.dataBuffer.set(data, this.dataBuffer.pos);
     this.dataBuffer.pos += data.length;
+	
+    if (this.dataBuffer.pos == this.cmds.responsePowerLen)
+    {
+        var states = this.cmds.decodePowerResponse(this.dataBuffer);
+        this.log('onPowerData: raw: ' + hex(this.dataBuffer, this.cmds.responsePowerLen));
+        this.dataBuffer.copyWithin(0, this.cmds.responsePowerLen, this.dataBuffer.pos);
+        this.dataBuffer.pos -= this.cmds.responsePowerLen;
+        if (states) {
+			this.states = states;
+			this.log('onPowerData: ' + JSON.stringify(this.states));
+			if (this.states) {
+				//set(usedStateNames.status.n, this.states.power);
+				this.dev.set(usedStateNames.on.n, this.states.on);
+				devices.update();
+			}
+		}
+    }
 
     while (this.dataBuffer.pos >= this.cmds.responseLen)
     {
@@ -736,7 +753,7 @@ WifiLight.prototype.onData = function (data) {
             this.dev.set(usedStateNames.progSpeed.n, this.states.progSpeed);
             this.dev.set(usedStateNames.white.n, this.states.white);
             var rgb = '#' + this.states.red.toHex() + this.states.green.toHex() + this.states.blue.toHex();
-            if (this.states.white != undefined) rgb += this.states.white.toHex();
+            //if (this.states.white != undefined) rgb += this.states.white.toHex();
             this.dev.set(usedStateNames.rgb.n, rgb);
             devices.update();
         }
@@ -888,7 +905,7 @@ function normalizeConfig (config) {
 
         if (d.pollIntervall === undefined) d.pollIntervall = 30;
         d.pollIntervall = parseInt(d.pollIntervall) | 0;
-        if (d.pollIntervall && d.pollIntervall < 5) d.pollIntervall = 5;
+        if (d.pollIntervall && d.pollIntervall < 3) d.pollIntervall = 3;
 
         d.port = parseInt(d.port) || (c && c.port ? c.port : dev && dev.port ? dev.port : 5577);
         Object.keys(d).forEach(function(key) {

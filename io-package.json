@@ -1,13 +1,9 @@
 {
     "common": {
-        "name": "wifilight-community",
-        "version": "0.2.1",
+        "name": "wifilight",
+        "version": "9.9.9",
         "news": {
 
-            "0.2.1": {
-                "en": "required soef module version set to 0.4.15",
-                "de": "Mindest Version des Modules soef auf 0.4.15 erhöht"
-            },
             "0.2.0": {
                 "en": "device config handling changed",
                 "de": "Handhabung der Gerätekonfiguration geändert"
@@ -61,7 +57,6 @@
             "lw12",
             "ld382"
         ],
-        "license": "MIT",
         "platform": "Javascript/Node.js",
         "mode": "daemon",
         "icon": "wifilight.png",

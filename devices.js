@@ -125,7 +125,7 @@ exports.LD686 = {
 
       delay: 10,
      responseLen: 14,
-	 responsePowerLen: 4,
+     responsePowerLen: 4,
      on: [0x71, 0x23, 0x0f],
      off: [0x71, 0x24, 0x0f],
      //additional HEX field for RGBW. 0xF0 = RGB only; 0x0F WW only; 0xFF RGBW
@@ -153,15 +153,15 @@ exports.LD686 = {
              blue: data[8],
              white: data[9]
          };
-     },
-      decodePowerResponse: function(data) {
-         if (data[0] !== 15 && data[1] !== 113) return null;
-         //[129, 4, 35, 97, 33, 9, 11, 22, 33, 255, 3, 0, 0, 119]
-		 //0f 71 24 a4 [15, 113, 36, 164]
-         return {
-             on: ((data[2] === 0x23) ? true : false)
-         };
-     }
+        },
+        decodePowerResponse: function(data) {
+           if (data[0] !== 15 && data[1] !== 113) return null;
+           //[129, 4, 35, 97, 33, 9, 11, 22, 33, 255, 3, 0, 0, 119]
+           //0f 71 24 a4 [15, 113, 36, 164]
+           return {
+               on: ((data[2] === 0x23) ? true : false)
+           };
+       }
  };
 
 exports.LD382 = Object.assign({}, exports.LD382A, { // not tested

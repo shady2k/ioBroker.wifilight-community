@@ -1,36 +1,37 @@
 {
-  "_from": "iobroker.wifilight@^0.2.0",
-  "_id": "iobroker.wifilight@0.2.0",
+  "_from": "iobroker.wifilight@9.9.9",
+  "_id": "iobroker.wifilight@9.9.9",
   "_inBundle": false,
-  "_integrity": "sha1-p8q1Kz9viVsmTVyvFmbacJzJkYY=",
+  "_integrity": "sha512-CElyHWOv/l3QGW3FZVFJAUjuvhzPWAF73vSgckF5pWidmTT3gD5+eiLX+k6CDJsumckxtfd33D2QpI4cJKbACg==",
   "_location": "/iobroker.wifilight",
   "_phantomChildren": {
     "dgram": "1.0.1",
     "dns-packet": "1.3.1"
   },
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "iobroker.wifilight@^0.2.0",
+    "raw": "iobroker.wifilight@1.1.0",
     "name": "iobroker.wifilight",
     "escapedName": "iobroker.wifilight",
-    "rawSpec": "^0.2.0",
+    "rawSpec": "1.1.0",
     "saveSpec": null,
-    "fetchSpec": "^0.2.0"
+    "fetchSpec": "1.1.0"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/iobroker.wifilight/-/iobroker.wifilight-0.2.0.tgz",
-  "_shasum": "a7cab52b3f6f895b264d5caf1666da709cc99186",
-  "_spec": "iobroker.wifilight@^0.2.0",
-  "_where": "d:\\ioBroker",
+  "_resolved": "https://registry.npmjs.org/iobroker.wifilight/-/iobroker.wifilight-1.1.0.tgz",
+  "_shasum": "e6e14584a7dffb269fe4851f69362d2b61795d62",
+  "_spec": "iobroker.wifilight@1.1.0",
+  "_where": "/opt/iobroker",
   "author": {
     "name": "soef",
     "email": "soef@gmx.net"
   },
   "bugs": {
-    "url": "https://github.com/soef/iobroker.wifilight/issues"
+    "url": "https://github.com/iobroker-community-adapters/iobroker.wifilight/issues"
   },
   "bundleDependencies": false,
   "contributors": [
@@ -40,22 +41,35 @@
     }
   ],
   "dependencies": {
+    "@iobroker/adapter-core": "^1.0.3",
+    "array-ext": "^0.1.0",
     "mdns-discovery": "^0.1.12",
     "netmask": "^1.0.6",
-    "soef": "^0.1.21"
+    "sprintf-js": "^1.0.3"
   },
   "deprecated": false,
   "description": "WiFi Light Adapter",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "grunt": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-http": "^2.2.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-replace": "^1.0.1",
-    "mocha": "^3.5.3"
+    "@iobroker/testing": "^1.2.6",
+    "@types/chai": "^4.2.3",
+    "@types/chai-as-promised": "^7.1.2",
+    "@types/gulp": "^4.0.6",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.14.21",
+    "@types/proxyquire": "^1.3.28",
+    "@types/sinon": "^7.5.0",
+    "@types/sinon-chai": "^3.2.3",
+    "axios": "^0.19.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^6.5.1",
+    "gulp": "^4.0.2",
+    "mocha": "^6.2.1",
+    "proxyquire": "^2.1.3",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0"
   },
-  "homepage": "https://github.com/soef/iobroker.wifilight",
+  "homepage": "https://github.com/iobroker-community-adapters/iobroker.wifilight",
   "keywords": [
     "ioBroker",
     "wifilight",
@@ -63,17 +77,17 @@
     "ld382"
   ],
   "license": "MIT",
-  "main": "wifilight.js",
+  "main": "main.js",
   "name": "iobroker.wifilight",
   "optionalDependencies": {
     "mdns-discovery": "^0.1.12"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/soef/iobroker.wifilight.git"
+    "url": "git+https://github.com/iobroker-community-adapters/iobroker.wifilight.git"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha --exit"
   },
-  "version": "0.2.0"
+  "version": "9.9.9"
 }
